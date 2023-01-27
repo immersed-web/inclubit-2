@@ -163,7 +163,10 @@
             label="gathering"
           />
         </QCardSection>
-        <QCardSection v-if="errorMsg" class="text-white bg-negative">
+        <QCardSection
+          v-if="errorMsg"
+          class="text-white bg-negative"
+        >
           {{ errorMsg }}
         </QCardSection>
         <QCardActions

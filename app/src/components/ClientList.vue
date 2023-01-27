@@ -123,9 +123,9 @@ const clientsWithMuteState = computed(() => {
   };
   const clients = Object.values(props.clients).map(client => {
     const muteState = getMuteState(client);
-    return { ...client, muteState: muteState, muteIcon: muteStateToIcon[muteState] };
+    return { ...client, muteState, muteIcon: muteStateToIcon[muteState] };
   });
-  return clients.sort((clientA, clientB) => {
+  return clients.sort((clientA, _clientB) => {
     if (clientA.role === 'client') return 1;
     return -1;
   });

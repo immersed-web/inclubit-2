@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import LoginBox from 'src/components/LoginBox.vue';
-import { getMe, login, getJwt } from 'src/modules/authClient';
+import { getMe, login, getJwt, scheduleReFetchJwt } from 'src/modules/authClient';
 import { useUserStore } from 'src/stores/userStore';
 import { RouteLocationRaw, useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
@@ -33,6 +33,7 @@ async function loginUser (creds: Creds) {
     const me = await getMe();
     console.log('me:', me);
     userStore.jwt = await getJwt();
+    scheduleReFetchJwt(userStore);
     let redirect: RouteLocationRaw = { name: 'index' };
     switch (me.role) {
       case 'client':

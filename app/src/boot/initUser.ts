@@ -2,7 +2,7 @@ import { boot } from 'quasar/wrappers';
 import { pinia } from './pinia';
 import { useUserStore } from 'src/stores/userStore';
 
-import { getJwt } from 'src/modules/authClient';
+import { getJwt, scheduleReFetchJwt } from 'src/modules/authClient';
 
 // "async" is optional;
 // more info on params: https://v2.quasar.dev/quasar-cli/boot-files
@@ -12,6 +12,7 @@ export default boot(async (/* { app, router, ... } */) => {
   try {
     console.log('trying to get userJwt!');
     userStore.jwt = await getJwt();
+    scheduleReFetchJwt(userStore);
     // return;
   } catch {
     // try {

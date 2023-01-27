@@ -2,7 +2,8 @@
 import { NonGuestUserRole, UserData } from 'shared-types/CustomTypes';
 import { AxiosResponse } from 'axios';
 import { api } from 'boot/axios';
-import { extractMessageFromCatch } from "shared-modules/utilFns";
+// import { extractMessageFromCatch } from 'shared-modules/utilFns';
+import { useUserStore } from 'src/stores/userStore';
 
 import type { Gathering, GatheringWithRoomsAndUsers, UserWithIncludes } from 'database';
 
@@ -42,4 +43,17 @@ export const getJwt = () => handleResponse<string>(() => api.get('/jwt'));
 export const guestJwt = () => handleResponse<string>(() => api.get('/guest-jwt'));
 export const logout = () => {
   handleResponse<void>(() => api.get('/logout'));
+};
+
+export const scheduleReFetchJwt = (store: ReturnType<typeof useUserStore>) => {
+  console.log('scheduling refetch!!');
+  if (store.userData?.exp) {
+    const expUnixStamp = new Date(store.userData.exp * 1000);
+    const expInMillis = expUnixStamp.valueOf() - Date.now();
+    console.log('expiresIn (millis):', expInMillis);
+    setTimeout(async () => {
+      store.jwt = await getJwt();
+      scheduleReFetchJwt(store);
+    }, expInMillis);
+  }
 };
