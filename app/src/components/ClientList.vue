@@ -7,7 +7,7 @@
         <QItem>
           <QItemSection>
             <div class="text-h6">
-              I detta rum:
+              {{ Object.keys(clients).length }} personer i detta rum:
             </div>
           </QItemSection>
           <QItemSection side>
@@ -65,14 +65,18 @@
           >
             <div class="q-gutter-sm">
               <QBtn
+                dense
+                rounded
+                :label="client.muteLabel"
                 :icon="client.muteIcon"
-                round
                 @click="toggleConsume(client)"
               >
                 <QTooltip>Sätt på / stäng av användarens mikrofon</QTooltip>
               </QBtn>
               <QBtn
-                round
+                dense
+                rounded
+                label="släng ut"
                 icon="person_remove"
                 text-color="negative"
                 @click="$emit('clientRemoved', client.clientId)"
@@ -121,9 +125,21 @@ const clientsWithMuteState = computed(() => {
       return 'unmuted';
     }
   };
+
+  const getMuteLabel = (muteState: ReturnType<typeof getMuteState>) => {
+    switch (muteState) {
+      case 'unmuted':
+        return 'ljud på';
+      case 'muted':
+        return 'ljud av';
+      case 'forceMuted':
+        return 'mikrofon blockerad';
+    }
+  };
+
   const clients = Object.values(props.clients).map(client => {
     const muteState = getMuteState(client);
-    return { ...client, muteState, muteIcon: muteStateToIcon[muteState] };
+    return { ...client, muteState, muteIcon: muteStateToIcon[muteState], muteLabel: getMuteLabel(muteState) };
   });
   return clients.sort((clientA, _clientB) => {
     if (clientA.role === 'client') return 1;

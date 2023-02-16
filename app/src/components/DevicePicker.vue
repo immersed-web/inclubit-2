@@ -1,4 +1,13 @@
 <template>
+  <p v-if="label">
+    {{ label }}
+    <QIcon
+      v-if="tooltip"
+      name="help"
+    >
+      <QTooltip>{{ tooltip }}</QTooltip>
+    </QIcon>
+  </p>
   <QSelect
     dense
     outlined
@@ -6,16 +15,19 @@
     :options="filteredDevices"
     :option-value="'deviceId'"
   />
-  <!-- <QIcon name="home" /> -->
 </template>
 
 <script setup lang="ts">
 
 import { ref, computed, watch } from 'vue';
 
-const props = defineProps<{mediaType?: MediaDeviceInfo['kind']}>();
+const props = defineProps<{
+  mediaType?: MediaDeviceInfo['kind'],
+  label?: string,
+  tooltip?: string
+}>();
 type DevicePickerEmits = {
-  (e: 'deviceselected', device: MediaDeviceInfo) : void
+  (e: 'deviceselected', device: MediaDeviceInfo): void
 }
 const emit = defineEmits<DevicePickerEmits>();
 const mediaDevices = ref<MediaDeviceInfo[]>([]);

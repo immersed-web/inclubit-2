@@ -68,11 +68,15 @@
           @click="toggleOpenRoom"
         />
         <DevicePicker
+          label="Välj din 360-kamera från nedanstående lista av anslutna video-enheter"
+          tooltip="Använder du en Ricoh Theta? Titta då efter en enhet med det namnet i listan"
           style="min-width: 15rem;"
           media-type="videoinput"
           @deviceselected="onVideoPicked"
         />
         <DevicePicker
+          label="Välj din ljudkälla"
+          tooltip="Om du inte väljer en ljudkälla kommer mottagarna inte höra dig"
           style="min-width: 15rem;"
           media-type="audioinput"
           @deviceselected="onAudioPicked"
