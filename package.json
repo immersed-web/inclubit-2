@@ -5,7 +5,8 @@
     "shared-modules": "workspace:*"
   },
   "devDependencies": {
+    "@types/node": "^18.15.11",
     "eslint": "^8.29.0",
-    "typescript": "^4.9.3"
+    "typescript": "4.9.5"
   }
 }

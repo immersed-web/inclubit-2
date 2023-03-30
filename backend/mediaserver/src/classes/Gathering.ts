@@ -48,7 +48,7 @@ export default class Gathering {
       return gathering;
     } catch (e) {
       console.error('failed to create gathering');
-      throw e;       
+      throw e;
     }
   }
 
@@ -92,7 +92,7 @@ export default class Gathering {
 
   private clients: Map<string, Client> = new Map();
 
-  private constructor(id = randomUUID(), name = 'unnamed', router: soup.Router){
+  private constructor(id: string = randomUUID(), name = 'unnamed', router: soup.Router){
     this.id = id;
     this.name = name;
     this.router = router;
@@ -141,11 +141,11 @@ export default class Gathering {
       this.destroy();
     }
   }
-  
+
   destroy() {
     gatheringLog(`destroying gathering ${this.id} `);
     this.router.close();
-    this.rooms.forEach(room => room.destroy());    
+    this.rooms.forEach(room => room.destroy());
     Gathering.gatherings.delete(this.id);
   }
 
@@ -280,7 +280,7 @@ export default class Gathering {
         transport.close();
       }
     });
-    
+
     // TODO: Why not work anymore????
     // transport.on('close', () => gatheringLog('---transport close--- transport with id ' + transport.id + ' closed'));
 
