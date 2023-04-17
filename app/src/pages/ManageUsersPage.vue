@@ -8,7 +8,7 @@
         <QCardSection>
           <QInput
             outlined
-            label="gathering name"
+            label="namn på skola"
             v-model="gatheringName"
           />
         </QCardSection>
@@ -21,7 +21,7 @@
           <QBtn
             type="submit"
             color="primary"
-            label="skapa gathering"
+            label="skapa skola"
           />
         </QCardActions>
       </QCard>
@@ -99,7 +99,7 @@
             <QItemSection>
               <div>
                 <QBtn
-                  label="ta bort gathering"
+                  label="ta bort skola"
                   color="negative"
                   @click="removeGathering(gathering.name)"
                 />
