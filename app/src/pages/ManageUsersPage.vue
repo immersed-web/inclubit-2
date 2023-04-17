@@ -241,7 +241,7 @@ async function addGathering () {
 
 async function removeGathering (gatheringName: string) {
   const _result = await asyncDialog({
-    message: 'Säker på att du vill ta bort detta gathering? Alla associerade användare kommer också bli borttagna.',
+    message: 'Säker på att du vill ta bort denna skola? Alla associerade användare kommer också bli borttagna.',
     title: `Bekräfta borttagning av ${gatheringName}`,
     cancel: { label: 'Avbryt', color: 'negative' },
     ok: { label: 'Ta bort', color: 'primary' },
