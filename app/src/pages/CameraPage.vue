@@ -65,6 +65,10 @@
         <QToggle
           v-model="roomIsOpen"
           :label="roomIsOpen?'rummet är öppet':'rummet är stängd'"
+          unchecked-icon="lock"
+          checked-icon="door_front"
+          :color="roomIsOpen?'positive':'negative'"
+          keep-color
           @click="toggleOpenRoom"
         />
         <DevicePicker
@@ -373,9 +377,7 @@ async function handleVideoStreamChanged () {
   if (videoProducerId) {
     originalVideoTrack.stop();
     originalVideoTrack = videoStream.getVideoTracks()[0];
-    if (!censorshieldEnabled.value) {
-      peer.replaceProducerTrack(videoProducerId, originalVideoTrack.clone());
-    }
+    peer.replaceProducerTrack(videoProducerId, originalVideoTrack.clone());
   } else {
     originalVideoTrack = videoStream.getVideoTracks()[0];
     let clonedTrack = originalVideoTrack.clone();
