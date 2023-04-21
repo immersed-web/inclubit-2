@@ -377,7 +377,9 @@ async function handleVideoStreamChanged () {
   if (videoProducerId) {
     originalVideoTrack.stop();
     originalVideoTrack = videoStream.getVideoTracks()[0];
-    peer.replaceProducerTrack(videoProducerId, originalVideoTrack.clone());
+    if (!censorshieldEnabled.value) {
+      peer.replaceProducerTrack(videoProducerId, originalVideoTrack.clone());
+    }
   } else {
     originalVideoTrack = videoStream.getVideoTracks()[0];
     let clonedTrack = originalVideoTrack.clone();
