@@ -65,6 +65,10 @@
         <QToggle
           v-model="roomIsOpen"
           :label="roomIsOpen?'rummet är öppet':'rummet är stängd'"
+          unchecked-icon="lock"
+          checked-icon="door_front"
+          :color="roomIsOpen?'positive':'negative'"
+          keep-color
           @click="toggleOpenRoom"
         />
         <DevicePicker
