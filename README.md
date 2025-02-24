@@ -57,7 +57,7 @@ There is an example called `example.env` in the root folder of the project. This
 ```
 cp example.env .env
 ```
-- I strongly advice against using dollarsigns (\$) anywhere in the .env file as that might fuck up everything (\$ is used for variables in linux).
+- I strongly advice against using dollarsigns (`$`) anywhere in the .env file as that might fuck up everything (\$ is used for variables in linux).
 - Should probably be careful with backslash (\\) too.
 
 The example file looks like this:
