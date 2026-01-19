@@ -395,13 +395,34 @@ export default class PeerClient extends TypedEmitter<PeerEvents> {
       });
     }
 
+    const timeoutDuration = 4000;
+    let restartICETimeout: ReturnType<typeof setTimeout> | undefined;
+
     transport.on('connectionstatechange', (state) => {
       console.log(`transport (${transport.id}) connection state changed to: `, state);
       switch (state) {
         case 'connecting':
           break;
         case 'connected':
+          if (restartICETimeout) clearTimeout(restartICETimeout);
           break;
+        case 'disconnected':
+          // console.error('transport connectionstatechange disconnected');
+          // console.time('disconnected');
+          restartICETimeout = setTimeout(async () => {
+            console.warn(`disconnected for ${timeoutDuration}ms. Will try to restart ICE`);
+            if (transport.direction === 'send') {
+              // const iceParameters = await clientOrThrow.value.soup.restartICEforSendTransport.query();
+              const { data: iceParameters } = await socketutils.sendRequest(createRequest('restartICEForSendTransport'));
+              transport.restartIce({ iceParameters });
+            } else {
+              // const iceParameters = await clientOrThrow.value.soup.restartICEforReceiveTransport.query();
+              const { data: iceParameters } = await socketutils.sendRequest(createRequest('restartICEForReceiveTransport'));
+              transport.restartIce({ iceParameters });
+            }
+          }, timeoutDuration);
+          break;
+
         case 'failed':
           console.error('transport connectionstatechange failed');
           transport.close();

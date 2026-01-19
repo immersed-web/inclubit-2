@@ -2,6 +2,14 @@ import { types as mediasoupTypes } from 'mediasoup';
 // import { WorkerLogTag } from 'mediasoup/lib/Worker';
 import ip from 'ip';
 
+import { ProfileLevelId, Profile, Level, profileLevelIdToString } from 'h264-profile-level-id';
+
+const h264_Baseline_Max_Level = profileLevelIdToString(new ProfileLevelId(Profile.Baseline, Level.L5));
+const h264_ConstrainedBaseline_Max_Level = profileLevelIdToString(new ProfileLevelId(Profile.ConstrainedBaseline, Level.L5));
+
+// This one seems to allow hardware accelerated encoding on the sender side (on the laptops I've tried) 🚀
+const h264_Main_Level52 = profileLevelIdToString(new ProfileLevelId(Profile.Main, Level.L5_2));
+
 
 let publicIp = process.env.LISTEN_IP;
 let internalIp = process.env.INTERNAL_IP;
@@ -58,25 +66,25 @@ const router: mediasoupTypes.RouterOptions = {
       clockRate: 48000,
       channels: 2,
     },
-    {
-      kind: 'video',
-      mimeType: 'video/VP8',
-      clockRate: 90000,
-      parameters: {
-        'x-google-start-bitrate': 1_000_000
-      },
-    },
     // {
     //   kind: 'video',
-    //   mimeType: 'video/h264',
+    //   mimeType: 'video/VP8',
     //   clockRate: 90000,
     //   parameters: {
-    //     'packetization-mode': 1,
-    //     'profile-level-id': '4d0032',
-    //     'level-asymmetry-allowed': 1,
-    //     //						  'x-google-start-bitrate'  : 1_000_000
+    //     'x-google-start-bitrate': 1_000_000
     //   },
     // },
+    {
+      kind: 'video',
+      mimeType: 'video/h264',
+      clockRate: 90000,
+      parameters: {
+        'packetization-mode': 1,
+        'profile-level-id': h264_Main_Level52,
+        'level-asymmetry-allowed': 1,
+        //						  'x-google-start-bitrate'  : 1_000_000
+      },
+    },
     // {
     //   kind: 'video',
     //   mimeType: 'video/h264',

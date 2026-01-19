@@ -49,6 +49,8 @@ export type AnyRequest =
   | RequestBuilder<'setRtpCapabilities', import('mediasoup').types.RtpCapabilities>
   | RequestBuilder<'createSendTransport'>
   | RequestBuilder<'createReceiveTransport'>
+  | RequestBuilder<'restartICEForSendTransport'>
+  | RequestBuilder<'restartICEForReceiveTransport'>
   | RequestBuilder<'connectTransport', {
     transportId: string,
     dtlsParameters: import('mediasoup').types.DtlsParameters,
@@ -207,6 +209,8 @@ export type AnyResponse =
   | ResponseBuilder<'getRouterRtpCapabilities', import('mediasoup').types.RtpCapabilities>
   | ResponseBuilder<'createSendTransport', mediasoupClientTypes.TransportOptions>
   | ResponseBuilder<'createReceiveTransport', mediasoupClientTypes.TransportOptions>
+  | ResponseBuilder<'restartICEForSendTransport', mediasoupClientTypes.IceParameters>
+  | ResponseBuilder<'restartICEForReceiveTransport', mediasoupClientTypes.IceParameters>
   | ResponseBuilder<'createConsumer', mediasoupClientTypes.ConsumerOptions>
   | ResponseBuilder<'setPauseStateForConsumer'>
   | ResponseBuilder<'createProducer', { producerId: string }>
