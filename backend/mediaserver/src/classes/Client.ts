@@ -181,6 +181,50 @@ export default class Client {
         this.send(response);
         break;
       }
+      case 'restartICEForSendTransport': {
+        let response: ResponseTo<'restartICEForSendTransport'>;
+        let errMsg = 'unknown error when trying to restart ICE';
+        const iceParameters = await this.sendTransport?.restartIce()
+        if (!iceParameters) {
+          errMsg = 'failed to restart ICE for sendTransport';
+          if (!this.sendTransport) {
+            errMsg = 'no sendTransport found for client';
+          }
+          response = createResponse('restartICEForSendTransport', msg.id, {
+            wasSuccess: false,
+            message: errMsg,
+          });
+        } else {
+          response = createResponse('restartICEForSendTransport', msg.id, {
+            wasSuccess: true,
+            data: iceParameters,
+          });
+        }
+        this.send(response);
+        break;
+      }
+      case 'restartICEForReceiveTransport': {
+        let response: ResponseTo<'restartICEForReceiveTransport'>;
+        let errMsg = 'unknown error when trying to restart ICE';
+        const iceParameters = await this.receiveTransport?.restartIce()
+        if (!iceParameters) {
+          errMsg = 'failed to restart ICE for receiveTransport';
+          if (!this.receiveTransport) {
+            errMsg = 'no receiveTransport found for client';
+          }
+          response = createResponse('restartICEForReceiveTransport', msg.id, {
+            wasSuccess: false,
+            message: errMsg
+          });
+        } else {
+          response = createResponse('restartICEForReceiveTransport', msg.id, {
+            wasSuccess: true,
+            data: iceParameters,
+          })
+        }
+        this.send(response);
+        break;
+      }
       case 'findGatheringByName': {
         let response: ResponseTo<'findGatheringByName'>;
         try{
