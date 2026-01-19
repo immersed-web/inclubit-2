@@ -215,7 +215,7 @@ export default class PeerClient extends TypedEmitter<PeerEvents> {
       const foundGatheringId = await this.findGathering(gatheringName);
       return this.joinGathering(foundGatheringId);
     } catch (e) {
-      console.warn(e);
+      // console.warn(e);
       const gathState = await this.createGathering(gatheringName);
       return this.joinGathering(gathState.gatheringId);
     }
@@ -266,7 +266,7 @@ export default class PeerClient extends TypedEmitter<PeerEvents> {
       const roomId = await this.findRoom(roomName);
       return this.joinRoom(roomId);
     } catch (e) {
-      console.warn(e);
+      // console.warn(e);
       const roomState = await this.createRoom(roomName);
       return this.joinRoom(roomState.roomId);
     }
