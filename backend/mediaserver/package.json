@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "debug": "^4.3.4",
+    "h264-profile-level-id": "^2.3.2",
     "ip": "^1.1.8",
     "shared-modules": "workspace:*",
     "shared-types": "workspace:*",
