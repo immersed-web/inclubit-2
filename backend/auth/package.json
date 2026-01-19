@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "dotenv -e ../../.env node ./dist/index.js",
-    "dev": "dotenv -v DEVELOPMENT=true -e ../../.env node-dev ./src/index.ts",
+    "dev": "dotenv -v DEVELOPMENT=true -e ../../.env tsx watch ./src/index.ts",
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "test": "jest --watch",
@@ -24,7 +24,6 @@
     "jest": "^27.3.1",
     "jest-mock-extended": "^2.0.4",
     "jest-ts-auto-mock": "^2.0.0",
-    "node-dev": "^7.4.3",
     "ts-auto-mock": "^3.5.0",
     "ts-jest": "^27.0.7",
     "ts-node": "^10.9.1",
@@ -39,6 +38,7 @@
     "express-session": "^1.17.2",
     "haikunator": "^2.1.2",
     "jsonwebtoken": "^8.5.1",
-    "shared-types": "workspace:*"
+    "shared-types": "workspace:*",
+    "tsx": "^4.21.0"
   }
 }

@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "mediasoup": "3.11",
-    "mediasoup-client": "3.6",
+    "mediasoup": "3.19",
+    "mediasoup-client": "3.18",
     "shared-modules": "workspace:*"
   },
   "devDependencies": {

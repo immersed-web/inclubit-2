@@ -74,14 +74,12 @@
         <DevicePicker
           label="Välj din 360-kamera från nedanstående lista av anslutna video-enheter"
           tooltip="Använder du en Ricoh Theta? Titta då efter en enhet med det namnet i listan"
-          style="min-width: 15rem;"
           media-type="videoinput"
           @deviceselected="onVideoPicked"
         />
         <DevicePicker
           label="Välj din ljudkälla"
           tooltip="Om du inte väljer en ljudkälla kommer mottagarna inte höra dig"
-          style="min-width: 15rem;"
           media-type="audioinput"
           @deviceselected="onAudioPicked"
         />
@@ -93,17 +91,13 @@
             @update="updateCensorShield"
             @toggle="censorshieldToggled"
           />
-          <canvas
-            v-show="censorSettings && censorshieldEnabled"
-            style="max-width: 100%; background-color: aqua;"
-            ref="canvasTag"
-          />
-          <video
-            v-show="censorSettings && !censorshieldEnabled"
-            ref="videoTag"
-            autoplay
-            style="max-width: 100%; background-color: darkcyan;"
-          />
+          <div id="videoWrapper" style="max-width: 100%;">
+            <p v-if="videoInfo" class="absolute bg-black">{{ videoInfo?.width }} x {{ videoInfo?.height }}</p>
+            <canvas v-show="censorSettings && censorshieldEnabled" style="max-width: 100%; background-color: aqua;"
+              ref="canvasTag" />
+            <video v-show="censorSettings && !censorshieldEnabled" ref="videoTag" autoplay
+              style="max-width: 100%; background-color: darkcyan;" />
+          </div>
         </div>
       </QCardSection>
     </QCard>
@@ -306,27 +300,39 @@ async function chooseRoomName (): Promise<string> {
 
 let videoStream: MediaStream;
 async function onVideoPicked (deviceInfo: MediaDeviceInfo) {
+  console.log('device picked: ', deviceInfo);
   pickedVideoDevice.value = deviceInfo;
   persistedStore.deviceId = deviceInfo.deviceId;
   if (!videoTag.value) {
     console.log('template ref not available');
     return;
   }
+  let videoConstraints: MediaStreamConstraints['video'] = {
+    deviceId: {
+      exact: deviceInfo.deviceId,
+    },
+    frameRate: {
+      ideal: 15,
+    },
+  };
+  const thetaConstraints: MediaStreamConstraints['video'] = {
+    width: { min: 3000 },
+    height: { min: 1500 },
+  };
+  if (deviceInfo.label.toLowerCase().includes('theta')) {
+    videoConstraints = { ...videoConstraints, ...thetaConstraints };
+  }
   // videoStream = await peer.requestMedia(deviceInfo.deviceId);
   videoStream = await navigator.mediaDevices.getUserMedia({
-    video: {
-      deviceId: deviceInfo.deviceId,
-      width: { min: 3000 },
-      height: { min: 1900 },
-      frameRate: 20,
-    },
+    video: videoConstraints,
   });
+  videoTag.value.srcObject = videoStream;
+
   const videoSettings = videoStream.getVideoTracks()[0].getSettings();
   if (!videoSettings) throw new Error('couldnt get settings from videotrack!!!');
   const { width, height, frameRate, aspectRatio } = videoSettings;
   videoInfo.value = { width, height, frameRate, aspectRatio };
 
-  videoTag.value.srcObject = videoStream;
   setCanvasPropsFromVideoInfo();
 
   handleVideoStreamChanged();
@@ -338,7 +344,9 @@ async function onAudioPicked (deviceInfo: MediaDeviceInfo) {
   console.log('audio picked: ', deviceInfo);
   audioStream = await navigator.mediaDevices.getUserMedia({
     audio: {
-      deviceId: deviceInfo.deviceId,
+      deviceId: {
+        exact: deviceInfo.deviceId,
+      },
     },
   });
   const audioTracks = audioStream.getAudioTracks();

@@ -13,7 +13,7 @@ import { createWorkers } from './modules/mediasoupWorkers';
 import { verifyJwtToken, DecodedJwt } from 'shared-modules/jwtUtils';
 import { extractMessageFromCatch } from 'shared-modules/utilFns';
 
-const clients: Map<uWebSockets.WebSocket, Client> = new Map();
+const clients: Map<uWebSockets.WebSocket<{ decoded: DecodedJwt }>, Client> = new Map();
 const disconnectedClients: Map<string, Client> = new Map();
 
 createWorkers();
@@ -55,7 +55,7 @@ if(stdin && stdin.isTTY){
 
 const app = uWebSockets.App();
 
-app.ws('/*', {
+app.ws<{ decoded: DecodedJwt }>('/*', {
 
   /* There are many common helper features */
   idleTimeout: 64,
@@ -131,7 +131,8 @@ app.ws('/*', {
     }
   },
   open: (ws) => {
-    const decodedJwt = ws.decoded as DecodedJwt;
+    // const decodedJwt = ws.decoded as DecodedJwt;
+    const decodedJwt = ws.getUserData().decoded;
     // const wsWrapper = new SocketWrapper(ws);
     const idleClient = disconnectedClients.get(decodedJwt.uuid);
     let client: Client;
