@@ -2,8 +2,9 @@
 import uWebsocket from 'uWebSockets.js';
 // import { TypedEmitter } from 'tiny-typed-emitter';
 import { Request, AnyResponse, RequestSubjects, SocketMessage, UnknownMessageType, AnySuccessResponse, SuccessResponseTo } from 'shared-types/MessageTypes';
+import { DecodedJwt } from 'shared-modules/jwtUtils';
 
-export type InternalSocketType = uWebsocket.WebSocket;
+export type InternalSocketType = uWebsocket.WebSocket<{ decoded: DecodedJwt }>;
 // type InternalMessageType = uWebsocket.RecognizedString;
 export type InternalMessageType = ArrayBuffer;
 
