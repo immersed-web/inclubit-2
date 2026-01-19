@@ -24,7 +24,7 @@ exe sudo apt-get update -y
 
 stage 'Node, PNPM and other global javascript/node dependencies'
 say 'Install NVM (node version manager)'
-exe curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+exe curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 
 say 'Source nvm so we can call it from within this shell script'
 . ~/.nvm/nvm.sh
@@ -32,7 +32,7 @@ say 'Source nvm so we can call it from within this shell script'
 . ~/.bashrc
 
 say 'Install node LTS'
-exe nvm install 18
+exe nvm install
 
 say 'Verify node is installed'
 exe node --version
