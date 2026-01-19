@@ -1,6 +1,16 @@
 packages:
-  - 'app/'
-  - 'backend/*'
-  - 'packages/*'
-  # exclude packages that are inside test directories
+  - app/
+  - backend/*
+  - packages/*
   - '!**/test/**'
+
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - '@prisma/client'
+  - '@prisma/engines'
+  - bcrypt
+  - core-js
+  - esbuild
+  - mediasoup
+  - prisma
+  - vue-demi
