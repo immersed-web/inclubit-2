@@ -13,6 +13,8 @@ type ReqEvents = {
   [event in RequestSubjects]: (msgId: number, data: Request<event> extends { data: unknown } ? Request<event>['data'] : undefined) => void;
 }
 
+console.log('mediasoup-client version: ', mediasoupClient.version);
+
 type AbortEvent = (reason: string) => void;
 
 type PeerEvents = MsgEvents & ReqEvents & { abort: AbortEvent };
